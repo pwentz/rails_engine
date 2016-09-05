@@ -17,3 +17,4 @@
 .byebug_history
 # Ignore SimpleCov coverage files.
 coverage
+*.csv
