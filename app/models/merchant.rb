@@ -6,7 +6,11 @@ class Merchant < ApplicationRecord
   has_many :customers, through: :invoices
 
   def self.most_items_sold(quantity)
-    Merchant.select("merchants.*, SUM(invoice_items.quantity) AS most_items").
-      joins(:invoice_items).order("most_items DESC").group("merchants.id").first(quantity)
+    Merchant.
+      select("merchants.*, SUM(invoice_items.quantity) AS most_items").
+      joins(:invoice_items).
+      order("most_items DESC").
+      group("merchants.id").
+      first(quantity)
   end
 end

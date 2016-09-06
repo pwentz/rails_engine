@@ -20,25 +20,24 @@ RSpec.describe Merchant, type: :model do
     item_two = create(:item, merchant: merchant_two)
     item_three = create(:item, merchant: merchant_three)
 
-    invoice_item_one = create(
+    create(
       :invoice_item,
       quantity: 7,
       item: item_one,
       invoice: invoice_one
     )
-    invoice_item_two = create(
+    create(
       :invoice_item,
       quantity: 2,
       item: item_two,
       invoice: invoice_two
     )
-    invoice_item_three = create(
+    create(
       :invoice_item,
       quantity: 6,
       item: item_three,
       invoice: invoice_three
     )
-
 
     expect(
       Merchant.most_items_sold(2)
