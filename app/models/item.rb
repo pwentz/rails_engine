@@ -13,6 +13,7 @@ class Item < ApplicationRecord
       order("revenue DESC").
       group("items.id").
       first(quantity)
+  end
 
   def unit_price
     (super().to_f / 100).to_s

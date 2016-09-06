@@ -34,6 +34,7 @@ Rails.application.routes.draw do
         get '/find', to: 'transactions/search#show', on: :collection
         get '/find_all', to: 'transactions/search#index', on: :collection
         get '/random', to: 'transactions/random#show', on: :collection
+      end
 
       resources :items, only: [:show, :index] do
         get '/find', to: 'items/search#show', on: :collection
