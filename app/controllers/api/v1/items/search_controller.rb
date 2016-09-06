@@ -31,8 +31,6 @@ class Api::V1::Items::SearchController < Api::V1::BaseController
     unit_price = item_params[:unit_price] if item_params[:unit_price]
     if unit_price && unit_price.include?('.')
       params[:unit_price] = (unit_price.to_f * 100).round(0)
-    elsif unit_price
-      params[:unit_price] = unit_price.to_i * 100
     end
   end
 end
