@@ -20,10 +20,6 @@ Rails.application.routes.draw do
         get '/random', to: 'merchants/random#show', on: :collection
       end
 
-      resources :items, only: [:show, :index] do
-        get '/most_revenue', to: 'items/revenue#index', on: :collection
-      end
-
       resources :customers, only: [:show, :index] do
         get '/find', to: 'customers/search#show', on: :collection
         get '/find_all', to: 'customers/search#index', on: :collection
@@ -40,6 +36,13 @@ Rails.application.routes.draw do
         get '/find', to: 'items/search#show', on: :collection
         get '/find_all', to: 'items/search#index', on: :collection
         get '/random', to: 'items/random#show', on: :collection
+        get '/most_revenue', to: 'items/revenue#index', on: :collection
+      end
+
+      resources :invoice_items, only: [:show, :index] do
+        get '/find', to: 'invoice_items/search#show', on: :collection
+        get '/find_all', to: 'invoice_items/search#index', on: :collection
+        get '/random', to: 'invoice_items/random#show', on: :collection
       end
     end
   end
