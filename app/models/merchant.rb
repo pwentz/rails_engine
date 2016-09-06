@@ -13,4 +13,8 @@ class Merchant < ApplicationRecord
       group("merchants.id").
       first(quantity)
   end
+
+  def self.random
+    order("RANDOM()").first
+  end
 end
