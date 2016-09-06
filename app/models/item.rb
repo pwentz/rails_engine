@@ -7,7 +7,7 @@ class Item < ApplicationRecord
     Item.select(
       "items.*, "\
       "SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue"
-      ).
+    ).
       joins(:invoice_items).
       order("revenue DESC").
       group("items.id").
