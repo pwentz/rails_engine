@@ -19,4 +19,18 @@ FactoryGirl.define do
     credit_card_number 424_242_424_242_424_2
     result 'success'
   end
+
+  factory :invoice_item do
+    invoice
+    item
+    quantity Faker::Number.number(1)
+    unit_price Faker::Number.number(5)
+  end
+
+  factory :item do
+    name Faker::Commerce.product_name
+    description Faker::Lorem.sentence
+    unit_price Faker::Number.number(5)
+    merchant
+  end
 end
