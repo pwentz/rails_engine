@@ -12,4 +12,8 @@ class Customer < ApplicationRecord
       order("trans_count DESC").
       first
   end
+
+  def self.random
+    order("RANDOM()").first
+  end
 end
