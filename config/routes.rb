@@ -37,6 +37,8 @@ Rails.application.routes.draw do
         get '/find_all', to: 'items/search#index', on: :collection
         get '/random', to: 'items/random#show', on: :collection
         get '/most_revenue', to: 'items/revenue#index', on: :collection
+        get '/invoice_items', to: 'items/invoice_items#index', on: :member
+        get '/merchant', to: 'items/merchants#show', on: :member
       end
 
       resources :invoice_items, only: [:show, :index] do
