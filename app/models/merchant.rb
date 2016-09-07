@@ -7,15 +7,21 @@ class Merchant < ApplicationRecord
   has_many :customers, through: :invoices
 
   def self.most_items_sold(quantity)
-    select("merchants.*, SUM(invoice_items.quantity) AS most_items").
-      joins(:invoice_items).
+    select("merchants.*, SUM(invoices.quantity) AS most_items").
+      joins(:invoices).
+      joins(:transactions).
+      where("transactions.result = 'success'").
       order("most_items DESC").
       group("merchants.id").
       first(quantity)
   end
 
-  def revenue
-    { "revenue" => calculate_revenue }
+  def revenue(date)
+    if date
+      { "revenue" => revenue_on_date(date.to_time.utc) }
+    else
+      { "revenue" => calculate_revenue }
+    end
   end
 
   def calculate_revenue
@@ -43,5 +49,24 @@ class Merchant < ApplicationRecord
       merge(Transaction.
       unsuccessful).
       distinct
+  end
+
+  def revenue_on_date(date)
+    number_with_precision(
+      invoices.
+      where(
+        'invoices.created_at >= ? AND '\
+        'invoices.created_at <= ?',
+        date.beginning_of_day,
+        date.end_of_day
+      ).
+      joins(:invoice_items, :transactions).
+      where("transactions.result = 'success'").
+      sum(
+        '(invoice_items.unit_price::float / 100) '\
+        '* invoice_items.quantity'
+      ),
+      precision: 2
+    )
   end
 end

@@ -10,9 +10,9 @@ class Customer < ApplicationRecord
       joins(:invoice_items).
       select(
         "merchants.*, "\
-        "SUM((invoice_items.unit_price / 100) * quantity) AS revenue"
+        "SUM((invoice_items.unit_price / 100) * quantity) AS total"
       ).
-      order("revenue DESC").
+      order("total DESC").
       group("merchants.id").
       first
   end
