@@ -49,6 +49,7 @@ Rails.application.routes.draw do
         get '/most_revenue', to: 'items/revenue#index', on: :collection
         get '/invoice_items', to: 'items/invoice_items#index', on: :member
         get '/merchant', to: 'items/merchants#show', on: :member
+        get '/most_items', to: 'items/items_sold#index', on: :collection
       end
 
       resources :invoice_items, only: [:show, :index] do

@@ -15,6 +15,11 @@ class Item < ApplicationRecord
       first(quantity)
   end
 
+  def self.top_items_by_number_sold(quantity)
+
+
+  end
+
   def unit_price
     (super.to_f / 100).to_s
   end
