@@ -1,6 +1,7 @@
 class Transaction < ApplicationRecord
   include ActiveModel::Serializers::JSON
   belongs_to :invoice
+  scope :unsuccessful, -> { where(result: 'failed') }
 
   def credit_card_number
     super.to_s

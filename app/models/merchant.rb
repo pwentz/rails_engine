@@ -32,4 +32,16 @@ class Merchant < ApplicationRecord
       precision: 2
     )
   end
+
+  def customers_with_pending_invoices
+    customers.
+      joins(:invoices).
+      joins(
+        "INNER JOIN transactions ON " \
+        "transactions.invoice_id = invoices.id"
+      ).
+      merge(Transaction.
+      unsuccessful).
+      distinct
+  end
 end
