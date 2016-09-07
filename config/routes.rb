@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :invoices, only: [:show, :index] do
@@ -14,23 +13,32 @@ Rails.application.routes.draw do
       end
 
       resources :merchants, only: [:show, :index] do
-        get '/most_items', to: 'merchants/items#index', on: :collection
+        get '/most_items',
+            to: 'merchants/items_analysis#index',
+            on: :collection
         get '/find', to: 'merchants/search#show', on: :collection
         get '/find_all', to: 'merchants/search#index', on: :collection
         get '/random', to: 'merchants/random#show', on: :collection
         get '/revenue', to: 'merchants/revenue#show', on: :member
+        get '/items', to: 'merchants/items#index', on: :member
+        get '/invoices', to: 'merchants/invoices#index', on: :member
       end
 
       resources :customers, only: [:show, :index] do
         get '/find', to: 'customers/search#show', on: :collection
         get '/find_all', to: 'customers/search#index', on: :collection
         get '/random', to: 'customers/random#show', on: :collection
+        get '/invoices', to: 'customers/invoices#index', on: :member
+        get '/transactions',
+            to: 'customers/transactions#index',
+            on: :member
       end
 
       resources :transactions, only: [:show, :index] do
         get '/find', to: 'transactions/search#show', on: :collection
         get '/find_all', to: 'transactions/search#index', on: :collection
         get '/random', to: 'transactions/random#show', on: :collection
+        get '/invoice', to: 'transactions/invoice#show', on: :member
       end
 
       resources :items, only: [:show, :index] do
@@ -46,6 +54,8 @@ Rails.application.routes.draw do
         get '/find', to: 'invoice_items/search#show', on: :collection
         get '/find_all', to: 'invoice_items/search#index', on: :collection
         get '/random', to: 'invoice_items/random#show', on: :collection
+        get '/invoice', to: 'invoice_items/invoices#show', on: :member
+        get '/item', to: 'invoice_items/items#show', on: :member
       end
     end
   end

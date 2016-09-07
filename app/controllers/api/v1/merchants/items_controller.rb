@@ -1,7 +1,7 @@
-class Api::V1::Merchants::ItemsController < ApplicationController
-  respond_to :json
+class Api::V1::Merchants::ItemsController < Api::V1::BaseController
   def index
-    items_sold = Merchant.most_items_sold(params[:quantity])
-    respond_with items_sold
+    items = Merchant.find(params[:id]).items
+
+    respond_with items
   end
 end
