@@ -21,8 +21,17 @@ class Item < ApplicationRecord
   end
 
   def self.top_items_by_number_sold(quantity)
-
-
+    unscoped.
+      select(
+        "items.*, "\
+        "SUM(invoice_items.quantity) AS most_items"
+      ).
+      joins(:transactions).
+      where("transactions.result = 'success'").
+      joins(:invoice_items).
+      order("most_items DESC").
+      group("items.id").
+      first(quantity)
   end
 
   def unit_price
