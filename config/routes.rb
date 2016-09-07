@@ -43,6 +43,8 @@ Rails.application.routes.draw do
         get '/find', to: 'invoice_items/search#show', on: :collection
         get '/find_all', to: 'invoice_items/search#index', on: :collection
         get '/random', to: 'invoice_items/random#show', on: :collection
+        get '/invoice', to: 'invoice_items/invoices#show', on: :member
+        get '/item', to: 'invoice_items/items#show', on: :member
       end
     end
   end
