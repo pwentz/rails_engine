@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :invoices, only: [:show, :index] do
@@ -14,10 +13,14 @@ Rails.application.routes.draw do
       end
 
       resources :merchants, only: [:show, :index] do
-        get '/most_items', to: 'merchants/items#index', on: :collection
+        get '/most_items',
+            to: 'merchants/items_analysis#index',
+            on: :collection
         get '/find', to: 'merchants/search#show', on: :collection
         get '/find_all', to: 'merchants/search#index', on: :collection
         get '/random', to: 'merchants/random#show', on: :collection
+        get '/items', to: 'merchants/items#index', on: :member
+        get '/invoices', to: 'merchants/invoices#index', on: :member
       end
 
       resources :customers, only: [:show, :index] do
