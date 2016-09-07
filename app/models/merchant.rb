@@ -69,4 +69,16 @@ class Merchant < ApplicationRecord
       precision: 2
     )
   end
+
+  def favorite_customer
+    customers.
+      select(
+        "customers.*, SUM(CASE transactions.result WHEN " \
+        "'success' THEN 1 ELSE 0 END) AS total_successful_trans"
+      ).
+      joins(:transactions).
+      group("customers.id").
+      order("total_successful_trans DESC").
+      first
+  end
 end
