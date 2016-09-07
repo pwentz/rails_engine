@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get '/find', to: 'merchants/search#show', on: :collection
         get '/find_all', to: 'merchants/search#index', on: :collection
         get '/random', to: 'merchants/random#show', on: :collection
+        get '/revenue', to: 'merchants/revenue#show', on: :member
       end
 
       resources :customers, only: [:show, :index] do
