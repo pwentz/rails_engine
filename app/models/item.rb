@@ -12,10 +12,22 @@ class Item < ApplicationRecord
         "SUM((invoice_items.unit_price::float / 100) "\
         "* invoice_items.quantity) AS revenue"
       ).
-      joins(:transactions).
+      joins(:transactions, :invoice_items).
       where("transactions.result = 'success'").
-      joins(:invoice_items).
       order("revenue DESC").
+      group("items.id").
+      first(quantity)
+  end
+
+  def self.top_items_by_number_sold(quantity)
+    unscoped.
+      select(
+        "items.*, "\
+        "SUM(invoice_items.quantity) AS most_items"
+      ).
+      joins(:transactions, :invoice_items).
+      where("transactions.result = 'success'").
+      order("most_items DESC").
       group("items.id").
       first(quantity)
   end
