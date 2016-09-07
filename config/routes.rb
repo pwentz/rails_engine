@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         get '/transactions',
             to: 'customers/transactions#index',
             on: :member
+        get '/favorite_merchant', to: 'customers/merchants#show', on: :member
       end
 
       resources :transactions, only: [:show, :index] do
