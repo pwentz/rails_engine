@@ -33,16 +33,7 @@ class Item < ApplicationRecord
       first(quantity)
   end
 
-  def unit_price
-    (super.to_f / 100).to_s
-  end
-
   def best_day
-    { 'best_day': best_day_calculation }
-  end
-
-  # Placeholder method until serializers / JBuilders are in place
-  def best_day_calculation
     invoices.
       joins(:invoice_items).
       order("invoice_items.quantity DESC, invoices.created_at DESC").
