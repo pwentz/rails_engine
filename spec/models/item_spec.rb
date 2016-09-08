@@ -1,4 +1,5 @@
 require 'rails_helper'
+include SampleDataHelper
 
 RSpec.describe Item, type: :model do
   context 'associations' do
@@ -7,35 +8,51 @@ RSpec.describe Item, type: :model do
     it { should have_many(:invoices).through(:invoice_items) }
   end
 
-  xit 'returns top x items in order of most revenue' do
-    # Skipping until method is fixed
-    item_one = create(:item, unit_price: 900)
-    item_two = create(:item, unit_price: 1200)
-    item_three = create(:item, unit_price: 2000)
+  context 'class methods' do
+    xit 'returns top x items in order of most revenue' do
+      # Skipping until method is fixed
+      item_one = create(:item, unit_price: 900)
+      item_two = create(:item, unit_price: 1200)
+      item_three = create(:item, unit_price: 2000)
 
-    create(
+      create(
       :invoice_item,
       item: item_one,
       unit_price: item_one.unit_price,
       quantity: 10
-    )
+      )
 
-    create(
+      create(
       :invoice_item,
       item: item_two,
       unit_price: item_two.unit_price,
       quantity: 3
-    )
+      )
 
-    create(
+      create(
       :invoice_item,
       item: item_three,
       unit_price: item_three.unit_price,
       quantity: 4
-    )
+      )
 
-    expect(
+      expect(
       Item.most_revenue(2)
-    ).to eq([item_one, item_three])
+      ).to eq([item_one, item_three])
+    end
+
+    it 'returns top items by number sold' do
+      data = top_items_sample_data
+
+      expect(Item.top_items_by_number_sold(1)).to eq([data[:item]])
+    end
+  end
+
+  context 'instance methods' do
+    it "returns an item's best day" do
+      data = best_day_sample_data
+
+      expect(data[:item].best_day).to eq(data[:day])
+    end
   end
 end

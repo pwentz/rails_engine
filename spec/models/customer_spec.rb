@@ -1,4 +1,5 @@
 require 'rails_helper'
+include SampleDataHelper
 
 RSpec.describe Customer, type: :model do
   context 'associations' do
@@ -9,27 +10,9 @@ RSpec.describe Customer, type: :model do
 
   context 'instance methods' do
     it "knows it's favorite merchant" do
-      customer = create(:customer)
-      merch_one,
-        merch_two = create_list(:merchant, 2)
-      invoices_one = create_list(
-        :invoice,
-        2,
-        customer: customer,
-        merchant: merch_one
-      )
-      invoices_two = create_list(
-        :invoice,
-        2,
-        customer: customer,
-        merchant: merch_two
-      )
-      create(:transaction, invoice: invoices_one.first, result: 'failed')
-      create(:transaction, invoice: invoices_one.last)
-      create(:transaction, invoice: invoices_two.first)
-      create(:transaction, invoice: invoices_two.last)
+      data = favorite_merchant_sample_data
 
-      expect(customer.favorite_merchant).to eq(merch_two)
+      expect(data[:customer].favorite_merchant).to eq(data[:merchant_1])
     end
   end
 end

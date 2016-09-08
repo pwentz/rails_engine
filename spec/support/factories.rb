@@ -18,6 +18,10 @@ FactoryGirl.define do
     invoice
     credit_card_number 424_242_424_242_424_2
     result 'success'
+
+    factory :failed_transaction do
+      result 'failed'
+    end
   end
 
   factory :invoice_item do
