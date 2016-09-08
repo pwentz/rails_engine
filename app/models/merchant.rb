@@ -81,4 +81,15 @@ class Merchant < ApplicationRecord
       order("total_successful_trans DESC").
       first
   end
+
+  def self.most_revenue(num_records_to_return)
+    joins(:invoice_items).
+      select(
+        "merchants.*, SUM(invoice_items.unit_price * " \
+        "invoice_items.quantity) AS total_revenue"
+      ).
+      group("merchants.id").
+      order("total_revenue DESC").
+      first(num_records_to_return)
+  end
 end
