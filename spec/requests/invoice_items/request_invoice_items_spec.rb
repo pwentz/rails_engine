@@ -35,10 +35,11 @@ RSpec.describe "Request invoice items", type: :request do
 
     get '/api/v1/invoice_items/random'
 
-    invoice_items = InvoiceItem.all.map(&:to_json)
+    invoice_items = InvoiceItem.pluck(:id)
+    body = JSON.parse(response.body)
 
     expect(response).to have_http_status(200)
     expect(response.content_type).to eq('application/json')
-    expect(response.body).to be_in(invoice_items)
+    expect(body['id']).to be_in(invoice_items)
   end
 end

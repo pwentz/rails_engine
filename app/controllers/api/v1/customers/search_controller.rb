@@ -1,14 +1,12 @@
 class Api::V1::Customers::SearchController < Api::V1::BaseController
   def index
-    customers = Customer.where(customer_params)
-
-    respond_with customers
+    @customers = Customer.where(customer_params)
+    render 'api/v1/customers/index'
   end
 
   def show
-    customer = Customer.find_by(customer_params)
-
-    respond_with customer
+    @customer = Customer.find_by(customer_params)
+    render 'api/v1/customers/show'
   end
 
   private

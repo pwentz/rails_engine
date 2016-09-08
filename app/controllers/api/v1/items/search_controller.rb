@@ -1,16 +1,14 @@
 class Api::V1::Items::SearchController < Api::V1::BaseController
-  before_action :format_unit_price
+  before_action :format_unit_price_param
 
   def index
-    items = Item.where(item_params)
-
-    respond_with items
+    @items = Item.where(item_params)
+    render 'api/v1/items/index'
   end
 
   def show
-    item = Item.find_by(item_params)
-
-    respond_with item
+    @item = Item.find_by(item_params)
+    render 'api/v1/items/show'
   end
 
   private
@@ -25,12 +23,5 @@ class Api::V1::Items::SearchController < Api::V1::BaseController
       :created_at,
       :updated_at
     )
-  end
-
-  def format_unit_price
-    unit_price = item_params[:unit_price] if item_params[:unit_price]
-    if unit_price && unit_price.include?('.')
-      params[:unit_price] = (unit_price.to_f * 100).round(0)
-    end
   end
 end
