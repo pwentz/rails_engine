@@ -1,4 +1,5 @@
 class Item < ApplicationRecord
+  include ActiveModel::Serializers::JSON
   belongs_to :merchant
   has_many :invoice_items
   has_many :invoices, through: :invoice_items
@@ -34,5 +35,18 @@ class Item < ApplicationRecord
 
   def unit_price
     (super.to_f / 100).to_s
+  end
+
+  def best_day
+    { 'best_day': best_day_calculation }
+  end
+
+  # Placeholder method until serializers / JBuilders are in place
+  def best_day_calculation
+    invoices.
+      joins(:invoice_items).
+      order("invoice_items.quantity DESC, invoices.created_at DESC").
+      first.
+      created_at
   end
 end
