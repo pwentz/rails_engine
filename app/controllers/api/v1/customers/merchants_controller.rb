@@ -1,7 +1,6 @@
 class Api::V1::Customers::MerchantsController < Api::V1::BaseController
   def show
-    customer = Customer.find(params[:id])
-
-    respond_with customer.favorite_merchant
+    @merchant = Customer.find(params[:id]).favorite_merchant
+    render 'api/v1/merchants/show'
   end
 end

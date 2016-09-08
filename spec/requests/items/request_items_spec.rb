@@ -36,10 +36,11 @@ RSpec.describe "Request items", type: :request do
 
     get '/api/v1/items/random'
 
-    items = Item.all.map(&:to_json)
+    items = Item.pluck(:id)
+    body = JSON.parse(response.body)
 
     expect(response).to have_http_status(200)
     expect(response.content_type).to eq('application/json')
-    expect(response.body).to be_in(items)
+    expect(body['id']).to be_in(items)
   end
 end

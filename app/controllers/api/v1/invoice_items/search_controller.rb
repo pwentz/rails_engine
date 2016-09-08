@@ -1,16 +1,14 @@
 class Api::V1::InvoiceItems::SearchController < Api::V1::BaseController
-  before_action :format_unit_price
+  before_action :format_unit_price_param
 
   def index
-    invoice_items = InvoiceItem.where(invoice_item_params)
-
-    respond_with invoice_items
+    @invoice_items = InvoiceItem.where(invoice_item_params)
+    render 'api/v1/invoice_items/index'
   end
 
   def show
-    invoice_item = InvoiceItem.find_by(invoice_item_params)
-
-    respond_with invoice_item
+    @invoice_item = InvoiceItem.find_by(invoice_item_params)
+    render 'api/v1/invoice_items/show'
   end
 
   private
@@ -25,15 +23,5 @@ class Api::V1::InvoiceItems::SearchController < Api::V1::BaseController
       :created_at,
       :updated_at
     )
-  end
-
-  def format_unit_price
-    if invoice_item_params[:unit_price]
-      unit_price = invoice_item_params[:unit_price]
-    end
-
-    if unit_price && unit_price.include?('.')
-      params[:unit_price] = (unit_price.to_f * 100).round(0)
-    end
   end
 end

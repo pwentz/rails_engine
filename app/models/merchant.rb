@@ -8,7 +8,7 @@ class Merchant < ApplicationRecord
   def self.most_items_sold(quantity)
     select("merchants.*, SUM(invoice_items.quantity) AS most_items").
       joins(invoices: [:transactions, :invoice_items]).
-      where("transactions.result = 'success'").
+      merge(Transaction.successful).
       order("most_items DESC").
       group("merchants.id").
       first(quantity)
@@ -16,14 +16,9 @@ class Merchant < ApplicationRecord
 
   def revenue
     invoices.
-      joins(:transactions).
-      where(
-        "transactions.result = 'success'"
-      ).
-      joins(:invoice_items).
-      sum(
-        '(invoice_items.unit_price::float / 100) * quantity'
-      )
+      joins(:transactions, :invoice_items).
+      merge(Transaction.successful).
+      sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
   def customers_with_pending_invoices
@@ -33,25 +28,16 @@ class Merchant < ApplicationRecord
         "INNER JOIN transactions ON " \
         "transactions.invoice_id = invoices.id"
       ).
-      merge(Transaction.
-      unsuccessful).
+      merge(Transaction.unsuccessful).
       distinct
   end
 
   def revenue_on_date(date)
     invoices.
-      where(
-        'invoices.created_at >= ? AND '\
-        'invoices.created_at <= ?',
-        date.beginning_of_day,
-        date.end_of_day
-      ).
+      where(invoices: { created_at: date }).
       joins(:invoice_items, :transactions).
-      where("transactions.result = 'success'").
-      sum(
-        '(invoice_items.unit_price::float / 100) '\
-        '* invoice_items.quantity'
-      )
+      merge(Transaction.successful).
+      sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
   def favorite_customer
@@ -75,5 +61,12 @@ class Merchant < ApplicationRecord
       group("merchants.id").
       order("total_revenue DESC").
       first(num_records_to_return)
+  end
+
+  def self.revenue_on_date(date)
+    joins(invoices: [:transactions, :invoice_items]).
+      where(invoices: { created_at: date }).
+      merge(Transaction.successful).
+      sum("invoice_items.unit_price * invoice_items.quantity")
   end
 end

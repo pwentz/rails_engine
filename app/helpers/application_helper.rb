@@ -1,11 +1,8 @@
 module ApplicationHelper
   include ActionView::Helpers::NumberHelper
 
-  def formatted_date
-    params[:date].to_time.utc
-  end
-
-  def to_price(number)
+  def to_price(raw_number)
+    number = raw_number / 100.0
     number_with_precision(
       number,
       precision: 2

@@ -1,9 +1,3 @@
-json.array! @invoice_items do |invoice_item|
-  json.extract! invoice_item, :id,
-                              :item_id,
-                              :invoice_id,
-                              :quantity,
-                              :created_at,
-                              :updated_at
-  json.unit_price formatted_price(invoice_item)
-end
+json.partial! 'api/v1/shared/invoice_item',
+              collection: @invoice_items,
+              as: :invoice_item
