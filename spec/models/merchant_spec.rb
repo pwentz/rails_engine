@@ -1,4 +1,5 @@
 require 'rails_helper'
+include SampleDataHelper
 
 RSpec.describe Merchant, type: :model do
   context 'associations' do
@@ -8,39 +9,42 @@ RSpec.describe Merchant, type: :model do
   end
 
   it 'returns the top ranked x merchants by total items sold' do
-    merchant_one,
-    merchant_two,
-    merchant_three = create_list(:merchant, 3)
-
-    invoice_one = create(:invoice, merchant: merchant_one)
-    invoice_two = create(:invoice, merchant: merchant_two)
-    invoice_three = create(:invoice, merchant: merchant_three)
-
-    item_one = create(:item, merchant: merchant_one)
-    item_two = create(:item, merchant: merchant_two)
-    item_three = create(:item, merchant: merchant_three)
-
-    create(
-      :invoice_item,
-      quantity: 7,
-      item: item_one,
-      invoice: invoice_one
-    )
-    create(
-      :invoice_item,
-      quantity: 2,
-      item: item_two,
-      invoice: invoice_two
-    )
-    create(
-      :invoice_item,
-      quantity: 6,
-      item: item_three,
-      invoice: invoice_three
-    )
+    merchants = top_merchants
 
     expect(
       Merchant.most_items_sold(2)
-    ).to eq([merchant_one, merchant_three])
+    ).to eq([merchants.first, merchants.last])
+  end
+
+  it 'returns revenue across all merchants by date' do
+    top_merchants(
+      year: 2016,
+      month: 8,
+      day: [22, 28]
+    )
+
+    expect(
+      Merchant.revenue_on_date("08/22/16")
+    ).to eq(3900)
+  end
+
+  it 'returns revenue for individual merchant' do
+    merchant_revenue
+
+    expect(
+      Merchant.first.revenue
+    ).to eq(2000)
+  end
+
+  it 'returns revenue on date for an individual merchant' do
+    merchant_revenue(
+      year: 2016,
+      month: 8,
+      day: [22, 28]
+    )
+
+    expect(
+      Merchant.first.revenue_on_date("08/22/2016")
+    ).to eq(1000)
   end
 end
