@@ -1,5 +1,4 @@
 class Merchant < ApplicationRecord
-  include ActionView::Helpers::NumberHelper
   has_many :items
   has_many :invoices
   has_many :invoice_items, through: :items
@@ -15,17 +14,8 @@ class Merchant < ApplicationRecord
       first(quantity)
   end
 
-  def revenue(date)
-    if date
-      { "revenue" => revenue_on_date(date.to_time.utc) }
-    else
-      { "revenue" => calculate_revenue }
-    end
-  end
-
-  def calculate_revenue
-    number_with_precision(
-      invoices.
+  def revenue
+    invoices.
       joins(:transactions).
       where(
         "transactions.result = 'success'"
@@ -33,9 +23,7 @@ class Merchant < ApplicationRecord
       joins(:invoice_items).
       sum(
         '(invoice_items.unit_price::float / 100) * quantity'
-      ),
-      precision: 2
-    )
+      )
   end
 
   def customers_with_pending_invoices
@@ -51,8 +39,7 @@ class Merchant < ApplicationRecord
   end
 
   def revenue_on_date(date)
-    number_with_precision(
-      invoices.
+    invoices.
       where(
         'invoices.created_at >= ? AND '\
         'invoices.created_at <= ?',
@@ -64,9 +51,7 @@ class Merchant < ApplicationRecord
       sum(
         '(invoice_items.unit_price::float / 100) '\
         '* invoice_items.quantity'
-      ),
-      precision: 2
-    )
+      )
   end
 
   def favorite_customer

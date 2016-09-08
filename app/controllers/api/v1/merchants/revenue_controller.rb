@@ -6,8 +6,6 @@ class Api::V1::Merchants::RevenueController < Api::V1::BaseController
   end
 
   def show
-    merchant = Merchant.find(params[:id])
-
-    respond_with merchant.revenue(params[:date])
+    @merchant = Merchant.find(params[:id])
   end
 end
