@@ -1,14 +1,12 @@
 class Api::V1::Merchants::SearchController < Api::V1::BaseController
   def index
-    merchants = Merchant.where(merchant_params)
-
-    respond_with merchants
+    @merchants = Merchant.where(merchant_params)
+    render 'api/v1/merchants/index'
   end
 
   def show
-    merchant = Merchant.find_by(merchant_params)
-
-    respond_with merchant
+    @merchant = Merchant.find_by(merchant_params)
+    render 'api/v1/merchants/show'
   end
 
   private

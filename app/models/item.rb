@@ -14,7 +14,7 @@ class Item < ApplicationRecord
         "* invoice_items.quantity) AS revenue"
       ).
       joins(:transactions, :invoice_items).
-      where("transactions.result = 'success'").
+      merge(Transaction.successful).
       order("revenue DESC").
       group("items.id").
       first(quantity)
@@ -27,7 +27,7 @@ class Item < ApplicationRecord
         "SUM(invoice_items.quantity) AS most_items"
       ).
       joins(:transactions, :invoice_items).
-      where("transactions.result = 'success'").
+      merge(Transaction.successful).
       order("most_items DESC").
       group("items.id").
       first(quantity)

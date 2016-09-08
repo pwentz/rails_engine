@@ -1,13 +1,12 @@
 class Api::V1::Merchants::CustomersController < Api::V1::BaseController
   def index
-    merchant = Merchant.find(params[:id])
-
-    respond_with merchant.customers_with_pending_invoices
+    @customers =
+      Merchant.find(params[:id]).customers_with_pending_invoices
+    render 'api/v1/customers/index'
   end
 
   def show
-    merchant = Merchant.find(params[:id])
-
-    respond_with merchant.favorite_customer
+    @customer = Merchant.find(params[:id]).favorite_customer
+    render 'api/v1/customers/show'
   end
 end

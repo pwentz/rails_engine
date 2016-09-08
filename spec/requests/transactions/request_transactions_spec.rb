@@ -35,10 +35,11 @@ RSpec.describe "Request transactions", type: :request do
 
     get '/api/v1/transactions/random'
 
-    transactions = Transaction.all.map(&:to_json)
+    transactions = Transaction.pluck(:id)
+    body = JSON.parse(response.body)
 
     expect(response).to have_http_status(200)
     expect(response.content_type).to eq('application/json')
-    expect(response.body).to be_in(transactions)
+    expect(body['id']).to be_in(transactions)
   end
 end
