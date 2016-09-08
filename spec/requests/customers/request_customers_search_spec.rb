@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Customers::SearchController, type: :request do
+RSpec.describe 'Request customers search', type: :request do
   it 'returns a single instance matching params as json' do
     customer_one = create(
       :customer,

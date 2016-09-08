@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Customers::TransactionsController, type: :request do
+RSpec.describe "Request customers transactions", type: :request do
   it 'gets a customers transactions' do
     sample_customer = create(:customer)
     sample_invoice = create(

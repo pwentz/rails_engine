@@ -5,12 +5,9 @@ class Customer < ApplicationRecord
 
   def favorite_merchant
     merchants.
-      joins(:transactions, :invoice_items).
+      joins(:transactions).
       merge(Transaction.successful).
-      select(
-        "merchants.*, "\
-        "SUM((invoice_items.unit_price / 100) * quantity) AS total"
-      ).
+      select("merchants.*, COUNT(transactions.result) AS total").
       order("total DESC").
       group("merchants.id").
       first
