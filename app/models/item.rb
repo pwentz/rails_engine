@@ -32,7 +32,7 @@ class Item < ApplicationRecord
 
   def best_day
     invoices.
-      joins(:invoice_items).
+      includes(:invoice_items).
       order("invoice_items.quantity DESC, invoices.created_at DESC").
       first.
       created_at
