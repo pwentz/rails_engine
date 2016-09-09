@@ -1,5 +1,5 @@
 require 'rails_helper'
-include SampleDataHelper
+include CustomersSampleDataHelper
 
 RSpec.describe "Request customer favorite merchant", type: :request do
   it "gets a customer's favorite merchant" do

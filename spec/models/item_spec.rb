@@ -1,5 +1,5 @@
 require 'rails_helper'
-include SampleDataHelper
+include ItemsSampleDataHelper
 
 RSpec.describe Item, type: :model do
   context 'associations' do
