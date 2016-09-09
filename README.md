@@ -9,6 +9,7 @@ Rails Engine is a Rails 5.0 API that serves up record, relationship, and busines
 ## Usage
 * Open a local server with `rails s`
 * All endpoints respond _only_ to `GET` requests
+
 #### Record Endpoints
 * **Categories**:
   * Customers
