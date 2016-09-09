@@ -1,5 +1,6 @@
 require 'rails_helper'
-include SampleDataHelper
+include MerchantRevenueSampleDataHelper
+include MerchantsSampleDataHelper
 
 RSpec.describe Merchant, type: :model do
   context 'associations' do
@@ -9,15 +10,20 @@ RSpec.describe Merchant, type: :model do
   end
 
   it 'returns the top ranked x merchants by total items sold' do
-    merchants = top_merchants
+    merchants = top_three_merchants_by_items_sold
+    excluded_merchant = merchants.last
 
     expect(
       Merchant.most_items_sold(2)
-    ).to eq([merchants.first, merchants.last])
+    ).to eq(merchants[0..1])
+
+    expect(
+      excluded_merchant
+    ).not_to be_in(Merchant.most_items_sold(2))
   end
 
   it 'returns revenue across all merchants by date' do
-    top_merchants(
+    top_three_merchants_by_revenue(
       year: 2016,
       month: 8,
       day: [22, 28]

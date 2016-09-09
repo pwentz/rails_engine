@@ -1,5 +1,5 @@
 require 'rails_helper'
-include SampleDataHelper
+include CustomersSampleDataHelper
 
 RSpec.describe Customer, type: :model do
   context 'associations' do

@@ -1,5 +1,5 @@
 require 'rails_helper'
-include SampleDataHelper
+include ItemsSampleDataHelper
 
 RSpec.describe "Request items", type: :request do
   it 'gets an individual item' do
