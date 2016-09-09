@@ -9,8 +9,8 @@ class Item < ApplicationRecord
   def self.most_revenue(quantity)
     unscoped.
       select(
-        "items.*, "\
-        "SUM((invoice_items.unit_price::float / 100) "\
+        "items.*, " \
+        "SUM(invoice_items.unit_price " \
         "* invoice_items.quantity) AS revenue"
       ).
       joins(:transactions, :invoice_items).
@@ -22,10 +22,7 @@ class Item < ApplicationRecord
 
   def self.top_items_by_number_sold(quantity)
     unscoped.
-      select(
-        "items.*, "\
-        "SUM(invoice_items.quantity) AS most_items"
-      ).
+      select("items.*, SUM(invoice_items.quantity) AS most_items").
       joins(:transactions, :invoice_items).
       merge(Transaction.successful).
       order("most_items DESC").
