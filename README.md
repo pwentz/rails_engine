@@ -4,7 +4,9 @@
 Rails Engine is a Rails 5.0 API that serves up record, relationship, and business intelligence analysis data in JSON format. No authentication is required.
 
 ## Setup
-* `bundle` and `rails db:setup`
+* `bundle`
+* `rails db:setup`
+* `rake import` to seed the database
 
 ## Usage
 * Open a local server with `rails s`
